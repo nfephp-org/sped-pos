@@ -1,0 +1,23 @@
+{
+    "name": "nfephp-org/sped-pos",
+    "description": "Biblioteca para impressão da DANFCe em impressoras térmicas compatíveis.",
+    "type": "library",
+    "require": {
+        "php": ">=7.0",
+        "mike42/escpos-php": "^2.0"
+    },
+    "license": "LGPL",
+    "authors": [
+        {
+            "name": "Renan Galeno",
+            "email": "renangaleno@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "NFePHP\\POS\\": "src/"
+        }
+    },
+    "minimum-stability": "stable"
+}
