@@ -49,7 +49,7 @@ Em caso de dúvidas sobre o modo de uso, sempre recorra aos exemplos da pasta `e
 
 
 ## Exemplo impresso
-<img width="300" src="https://raw.githubusercontent.com/nfephp-org/sped-pos/master/examples/networkprint.jpg">
+<img width="300" src="https://raw.githubusercontent.com/nfephp-org/sped-pos/master/demo/networkprint/networkprint.jpg">
 
 ## Créditos
  - Renan Galeno (desenvolvedor)
