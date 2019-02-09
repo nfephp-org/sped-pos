@@ -1,9 +1,8 @@
 <?php
+require_once "../../vendor/autoload.php";
 
 use Mike42\Escpos\PrintConnectors\NetworkPrintConnector;
 use NFePHP\POS\DanfcePos;
-
-require_once "../vendor/autoload.php";
 
 // Configuração de impressão
 $printer_ip = '127.0.0.1'; // IP da impressora
@@ -20,11 +19,11 @@ try {
 $danfcepos = new DanfcePos($connector);
 
 // Carregar logo da empresa
-$logopath = 'fixtures/logo.png'; // Impressa no início da DANFCe
+$logopath = '../../fixtures/logo.png'; // Impressa no início da DANFCe
 $danfcepos->logo($logopath);
 
 // Carregar NFCe
-$xmlpath = 'fixtures/nfce_exemplo.xml'; // Também poderia ser o conteúdo do XML, no lugar do path
+$xmlpath = '../../fixtures/nfce_exemplo.xml'; // Também poderia ser o conteúdo do XML, no lugar do path
 $danfcepos->loadNFCe($xmlpath);
 
 // Imprimir
