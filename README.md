@@ -51,6 +51,29 @@ Em caso de dúvidas sobre o modo de uso, sempre recorra aos exemplos da pasta `e
 ## Exemplo impresso
 <img width="300" src="https://raw.githubusercontent.com/nfephp-org/sped-pos/master/demo/networkprint/networkprint.jpg">
 
+## Demonstrações
+Para executar as demonstrações:
+1. Clone o repositório
+
+   `git clone https://github.com/nfephp-org/sped-pos.git`
+
+   `cd sped-pos`
+2. Instale as dependências
+
+   `composer install`
+3. Execute o servidor
+
+   `cd demo`
+
+   `php -S localhost:7000`
+4. Acesse no navegador
+
+   NetworkPrint: `http://localhost:7000/networkprint/networkprint.php`
+
+   Base64: `http://localhost:7000/base64/base64.php`
+
+   QZ.io: `http://localhost:7000/qzio`
+
 ## Créditos
  - Renan Galeno (desenvolvedor)
  - Roberto L. Machado - pela biblioteca PosPrint, base deste projeto, e pelo espaço no projeto NFePHP.
