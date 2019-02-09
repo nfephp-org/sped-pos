@@ -1,2 +1,10 @@
 /vendor/
 .DS_Store
+.idea
+*~
+local
+nbproject
+clearTags
+build
+composer.lock
+config.json
