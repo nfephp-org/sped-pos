@@ -11,7 +11,7 @@ Biblioteca para impressão do DANFCe em impressoras térmicas compatíveis.
 
 3. Inclua a classe DanfcePos: `use NFePHP\POS\DanfcePos;`
 
-4. Veja os códigos exemplo na pasta `examples` sobre como utilizar os conectores da classe escpos-php.
+4. Veja os códigos exemplo na pasta `demo` sobre como utilizar os conectores da classe escpos-php.
 
    Para o conector de rede, um exemplo seria: 
 
@@ -45,7 +45,7 @@ Biblioteca para impressão do DANFCe em impressoras térmicas compatíveis.
    $danfcepos->imprimir();
    ```
 
-Em caso de dúvidas sobre o modo de uso, sempre recorra aos exemplos da pasta `examples`.
+Em caso de dúvidas sobre o modo de uso, sempre recorra aos exemplos da pasta `demo`.
 
 
 ## Exemplo impresso
