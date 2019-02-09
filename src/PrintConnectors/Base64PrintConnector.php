@@ -14,10 +14,12 @@ class Base64PrintConnector implements PrintConnector
      *  Buffer of accumilated data.
      */
     private $buffer;
+
     /**
      * @var string data which the printer will provide on next read
      */
     private $readData;
+
     /**
      * Create new print connector
      */
@@ -25,6 +27,7 @@ class Base64PrintConnector implements PrintConnector
     {
         $this->buffer = array();
     }
+
     /**
      * Destructor of print connector.
      * Does nothing in this print connector.
@@ -32,6 +35,7 @@ class Base64PrintConnector implements PrintConnector
     public function __destruct()
     {
     }
+
     /**
      * Clear buffer of print connector
      */
@@ -39,6 +43,7 @@ class Base64PrintConnector implements PrintConnector
     {
         $this->buffer = array();
     }
+
     /**
      * Does nothing in this print connector.
      * Normally closes the connection with printer.
@@ -46,6 +51,7 @@ class Base64PrintConnector implements PrintConnector
     public function finalize()
     {
     }
+
     /**
      * @return string Get the accumulated data that has been sent to this buffer.
      */
@@ -53,6 +59,7 @@ class Base64PrintConnector implements PrintConnector
     {
         return implode($this->buffer);
     }
+
     /**
      * @return string Get as base64 the accumulated data that has been sent to this buffer.
      */
@@ -60,14 +67,16 @@ class Base64PrintConnector implements PrintConnector
     {
         return base64_encode(implode($this->buffer));
     }
+
     /**
      * {@inheritDoc}
      * @see PrintConnector::read()
      */
     public function read($len)
     {
-        return $len>=strlen($this->readData) ? $this->readData : substr($this->readData, 0, $len);
+        return $len >= strlen($this->readData) ? $this->readData : substr($this->readData, 0, $len);
     }
+
     public function write($data)
     {
         $this->buffer[] = $data;
