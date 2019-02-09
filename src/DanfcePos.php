@@ -21,13 +21,13 @@ class DanfcePos
 
     /**
      * Printer
-     * @var Mike42\Escpos\Printer
+     * @var Printer
      */
     protected $printer;
 
     /**
      * Logo do emitente
-     * @var Mike42\Escpos\EscposImage
+     * @var EscposImage
      */
     protected $logo;
 
@@ -42,35 +42,6 @@ class DanfcePos
      * @var string
      */
     protected $uri = '';
-    protected $aURI = [
-        'AC' => 'http://www.sefaznet.ac.gov.br/nfce/consulta',
-        'AL' => 'http://nfce.sefaz.al.gov.br/consultaNFCe.htm',
-        'AP' => 'https://www.sefaz.ap.gov.br/sate/seg/SEGf_AcessarFuncao.jsp?cdFuncao=FIS_1261',
-        'AM' => 'http://sistemas.sefaz.am.gov.br/nfceweb/formConsulta.do',
-        'BA' => 'http://nfe.sefaz.ba.gov.br/servicos/nfce/default.aspx',
-        'CE' => '',
-        'DF' => 'http://dec.fazenda.df.gov.br/NFCE/',
-        'ES' => 'http://app.sefaz.es.gov.br/ConsultaNFCe',
-        'GO' => '',
-        'MA' => 'http://www.nfce.sefaz.ma.gov.br/portal/consultaNFe.do?method=preFilterCupom&',
-        'MT' => 'http://www.sefaz.mt.gov.br/nfce/consultanfce',
-        'MS' => 'http://www.dfe.ms.gov.br/nfce',
-        'MG' => '',
-        'PA' => 'https://appnfc.sefa.pa.gov.br/portal/view/consultas/nfce/consultanfce.seam',
-        'PB' => 'http://www.receita.pb.gov.br/nfce',
-        'PR' => 'http://www.fazenda.pr.gov.br',
-        'PE' => '',
-        'PI' => 'http://webas.sefaz.pi.gov.br/nfceweb/consultarNFCe.jsf',
-        'RJ' => 'www.nfce.fazenda.rj.gov.br/consulta',
-        'RN' => 'http://nfce.set.rn.gov.br/consultarNFCe.aspx',
-        'RS' => 'https://www.sefaz.rs.gov.br/NFCE/NFCE-COM.aspx',
-        'RO' => 'http://www.nfce.sefin.ro.gov.br',
-        'RR' => 'https://www.sefaz.rr.gov.br/nfce/servlet/wp_consulta_nfce',
-        'SC' => '',
-        'SP' => 'https://www.nfce.fazenda.sp.gov.br/NFCeConsultaPublica/Paginas/ConsultaPublica.aspx',
-        'SE' => 'http://www.nfce.se.gov.br/portal/portalNoticias.jsp',
-        'TO' => ''
-    ];
 
     /**
      * Carrega o conector da impressora.
@@ -147,9 +118,7 @@ class DanfcePos
         $bairro = (string)$this->nfce->infNFe->emit->enderEmit->xBairro;
         $mun = (string)$this->nfce->infNFe->emit->enderEmit->xMun;
         $uf = (string)$this->nfce->infNFe->emit->enderEmit->UF;
-        if (array_key_exists($uf, $this->aURI)) {
-            $this->uri = $this->aURI[$uf];
-        }
+        $this->uri = (string) $this->nfce->infNFeSupl->urlChave;
         $this->printer->setJustification(Printer::JUSTIFY_CENTER);
         if (!empty($this->logo)) {
             $this->printer->graphics($this->logo);
@@ -203,16 +172,25 @@ class DanfcePos
             $vTot += $vProd;
             // Formatar dados do item
             $linha = new \stdClass();
-            $linha->cod = $this->str_pad($cProd, 6, ' ');
-            $linha->descricao = $this->str_pad($xProd, 19, ' ');
-            $linha->quantidade = $this->str_pad($qCom, 5, ' ');
-            $linha->unidade = $this->str_pad($uCom, 3, ' ');
-            $linha->valor_unit = $this->str_pad(number_format($vUnCom, 2, ',', '.'), 7, ' ', STR_PAD_LEFT);
-            $linha->valor_total = $this->str_pad(number_format($vProd, 2, ',', '.'), 8, ' ', STR_PAD_LEFT);
+            $linha->cod = $this->strPad($cProd, 6, ' ');
+            $linha->descricao = $this->strPad($xProd, 19, ' ');
+            $linha->quantidade = $this->strPad($qCom, 5, ' ');
+            $linha->unidade = $this->strPad($uCom, 3, ' ');
+            $linha->valor_unit = $this->strPad(number_format($vUnCom, 2, ',', '.'), 7, ' ', STR_PAD_LEFT);
+            $linha->valor_total = $this->strPad(number_format($vProd, 2, ',', '.'), 8, ' ', STR_PAD_LEFT);
             // Imprimir linha
-            $this->printer->text($linha->cod . $linha->descricao . $linha->quantidade . $linha->unidade . $linha->valor_unit . $linha->valor_total . "\n");
+            $this->printer->text(
+                $linha->cod . $linha->descricao . $linha->quantidade
+                . $linha->unidade . $linha->valor_unit . $linha->valor_total . "\n"
+            );
         }
-        $printtot = str_pad((string)"Total:", 31, " ", STR_PAD_LEFT) . str_pad("R$" . number_format($vTot, 2, ',', '.'), 17, " ", STR_PAD_LEFT);
+        $printtot = str_pad(
+            (string)"Total:",
+            31,
+            " ",
+            STR_PAD_LEFT
+        )
+        . str_pad("R$" . number_format($vTot, 2, ',', '.'), 17, " ", STR_PAD_LEFT);
         $this->printer->setEmphasis(true);
         $this->printer->text($printtot . "\n");
         $this->printer->setEmphasis(false);
@@ -225,7 +203,13 @@ class DanfcePos
     protected function parteIV()
     {
         $vNF = (float)$this->nfce->infNFe->total->ICMSTot->vNF;
-        $printTotItens = $this->str_pad('Qtd. Total:', 31, " ", STR_PAD_LEFT) . $this->str_pad((string)$this->totItens, 17, " ", STR_PAD_LEFT);
+        $printTotItens = $this->strPad(
+            'Qtd. Total:',
+            31,
+            " ",
+            STR_PAD_LEFT
+        )
+        . $this->strPad((string)$this->totItens, 17, " ", STR_PAD_LEFT);
         $this->printer->text($printTotItens . "\n");
         $this->separador();
         $pag = $this->nfce->infNFe->pag->detPag;
@@ -234,7 +218,18 @@ class DanfcePos
             $tPag = (string)$pag->tPag;
             $tPag = (string)$this->tipoPag($tPag);
             $vPag = (float)$pag->vPag;
-            $printFormPag = $this->str_pad($tPag . ":", 31, " ", STR_PAD_LEFT) . $this->str_pad("R$" . number_format($vPag, 2, ',', '.'), 17, " ", STR_PAD_LEFT);
+            $printFormPag = $this->strPad(
+                $tPag . ":",
+                31,
+                " ",
+                STR_PAD_LEFT
+            )
+            . $this->strPad(
+                "R$" . number_format($vPag, 2, ',', '.'),
+                17,
+                " ",
+                STR_PAD_LEFT
+            );
             $this->printer->text($printFormPag . "\n");
         }
     }
@@ -246,7 +241,8 @@ class DanfcePos
     protected function parteV()
     {
         $vTotTrib = (float)$this->nfce->infNFe->total->ICMSTot->vTotTrib;
-        $printimp = $this->str_pad("Informação dos Tributos Incidentes:", 35, " ") . str_pad("R$" . number_format($vTotTrib, 2, ',', '.'), 13, " ", STR_PAD_LEFT);
+        $printimp = $this->strPad("Informação dos Tributos Incidentes:", 35, " ")
+        . str_pad("R$" . number_format($vTotTrib, 2, ',', '.'), 13, " ", STR_PAD_LEFT);
         $this->printer->text($printimp . "\n");
         $this->printer->setJustification(Printer::JUSTIFY_CENTER);
         $this->printer->text("Fonte IBPT - Lei Federal 12.741/2012\n");
@@ -290,9 +286,9 @@ class DanfcePos
         $chave = substr($Id, 3, strlen($Id) - 3);
         //$this->printer->text('Nr. ' . $nNF. ' Serie ' .$serie . ' Emissão ' .$dhEmi . ' via Consumidor');
         $linha = new \stdClass();
-        $linha->numero = $this->str_pad("NFCe: " . preg_replace("/[^0-9]/", "", $nNF), 15);
-        $linha->serie = $this->str_pad("Série: " . $serie, 10);
-        $linha->data = $this->str_pad(date('d/m/Y H:i:s', strtotime($dhEmi)), 23, ' ', STR_PAD_LEFT);
+        $linha->numero = $this->strPad("NFCe: " . preg_replace("/[^0-9]/", "", $nNF), 15);
+        $linha->serie = $this->strPad("Série: " . $serie, 10);
+        $linha->data = $this->strPad(date('d/m/Y H:i:s', strtotime($dhEmi)), 23, ' ', STR_PAD_LEFT);
         $this->printer->text($linha->numero . $linha->serie . $linha->data . "\n");
         $this->printer->setJustification(Printer::JUSTIFY_LEFT);
         $this->printer->text("Consulte pela chave de acesso em ");
@@ -396,8 +392,12 @@ class DanfcePos
         return '';
     }
 
-    private function str_pad($input, $pad_length, $pad_string = ' ', $pad_type = STR_PAD_RIGHT)
-    {
+    private function strPad(
+        $input,
+        $pad_length,
+        $pad_string = ' ',
+        $pad_type = STR_PAD_RIGHT
+    ) {
         $diff = strlen($input) - mb_strlen($input);
         return str_pad($input, $pad_length + $diff, $pad_string, $pad_type);
     }
@@ -413,7 +413,7 @@ class DanfcePos
      * @param int $tPag
      * @return string
      */
-    function intLowHigh($input, $length)
+    private function intLowHigh($input, $length)
     {
         $outp = "";
         for ($i = 0; $i < $length; $i++) {
