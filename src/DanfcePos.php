@@ -92,7 +92,7 @@ class DanfcePos
             $xml = @file_get_contents($nfcexml);
         }
         if (empty($xml)) {
-            throw new InvalidArgumentException('Não foi possivel ler o documento.');
+            throw new \InvalidArgumentException('Não foi possivel ler o documento.');
         }
         $nfe = simplexml_load_string($xml, null, LIBXML_NOCDATA);
         $this->protNFe = $nfe->protNFe;
