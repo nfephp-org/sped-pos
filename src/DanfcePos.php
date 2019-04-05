@@ -213,11 +213,10 @@ class DanfcePos
         $this->printer->text($printTotItens . "\n");
         $this->separador();
         $pag = $this->nfce->infNFe->pag->detPag;
-        $tot = $pag->count();
-        for ($x = 0; $x <= $tot - 1; $x++) {
-            $tPag = (string)$pag->tPag;
+        foreach ($pag as $pagI) {
+            $tPag = (string)$pagI->tPag;
             $tPag = (string)$this->tipoPag($tPag);
-            $vPag = (float)$pag->vPag;
+            $vPag = (float)$pagI->vPag;
             $printFormPag = $this->strPad(
                 $tPag . ":",
                 31,
