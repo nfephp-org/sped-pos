@@ -88,6 +88,7 @@ class DanfcePos
      */
     public function imprimir()
     {
+        $this->printer->setFont(Printer::FONT_B);
         $this->parteI();
         $this->parteII();
         $this->parteIII();
@@ -126,7 +127,7 @@ class DanfcePos
         $this->printer->setEmphasis(true);
         $this->printer->text($razao . "\n");
         $this->printer->setEmphasis(false);
-        $this->printer->setJustification(Printer::JUSTIFY_LEFT);
+        $this->printer->setJustification(Printer::JUSTIFY_CENTER);
         $this->printer->text("CNPJ: " . $cnpj . "     " . "IE: " . $ie . "\n");
         $this->printer->text($log . ', ' . $nro . "\n");
         $this->printer->text($bairro . ', ' . $mun . ' - ' . $uf . "\n");
@@ -143,7 +144,7 @@ class DanfcePos
         $this->printer->setEmphasis(true);
         $this->printer->text("DANFCe - Documento Auxiliar da Nota Fiscal\nde Consumidor Eletronica\n");
         $this->printer->setEmphasis(false);
-        $this->printer->setJustification(Printer::JUSTIFY_LEFT);
+        $this->printer->setJustification(Printer::JUSTIFY_CENTER);
         $this->printer->text("Não permite aproveitamento de crédito de ICMS.\n");
         $this->separador();
     }
@@ -154,6 +155,7 @@ class DanfcePos
      */
     protected function parteIII()
     {
+        $this->printer->setJustification(Printer::JUSTIFY_LEFT);
         // Cabeçalho
         $this->printer->setEmphasis(true);
         $this->printer->text("Cód.  Descrição          Qtd. Un.  Valor   Total\n");
@@ -211,12 +213,14 @@ class DanfcePos
         )
         . $this->strPad((string)$this->totItens, 17, " ", STR_PAD_LEFT);
         $this->printer->text($printTotItens . "\n");
+        $this->printer->setJustification(Printer::JUSTIFY_CENTER);
         $this->separador();
         $pag = $this->nfce->infNFe->pag->detPag;
-        foreach ($pag as $pagI) {
-            $tPag = (string)$pagI->tPag;
+        $tot = $pag->count();
+        for ($x = 0; $x <= $tot - 1; $x++) {
+            $tPag = (string)$pag->tPag;
             $tPag = (string)$this->tipoPag($tPag);
-            $vPag = (float)$pagI->vPag;
+            $vPag = (float)$pag->vPag;
             $printFormPag = $this->strPad(
                 $tPag . ":",
                 31,
@@ -245,7 +249,7 @@ class DanfcePos
         $this->printer->text($printimp . "\n");
         $this->printer->setJustification(Printer::JUSTIFY_CENTER);
         $this->printer->text("Fonte IBPT - Lei Federal 12.741/2012\n");
-        $this->printer->setJustification(Printer::JUSTIFY_LEFT);
+        $this->printer->setJustification(Printer::JUSTIFY_CENTER);
         $this->separador();
     }
 
@@ -289,7 +293,7 @@ class DanfcePos
         $linha->serie = $this->strPad("Série: " . $serie, 10);
         $linha->data = $this->strPad(date('d/m/Y H:i:s', strtotime($dhEmi)), 23, ' ', STR_PAD_LEFT);
         $this->printer->text($linha->numero . $linha->serie . $linha->data . "\n");
-        $this->printer->setJustification(Printer::JUSTIFY_LEFT);
+        $this->printer->setJustification(Printer::JUSTIFY_CENTER);
         $this->printer->text("Consulte pela chave de acesso em ");
         $this->printer->text($this->uri . "\n");
         $this->printer->text("CHAVE DE ACESSO\n");
@@ -311,7 +315,7 @@ class DanfcePos
             $this->printer->setEmphasis(false);
             return;
         }
-        $this->printer->setJustification(Printer::JUSTIFY_LEFT);
+        $this->printer->setJustification(Printer::JUSTIFY_CENTER);
         $xNome = (string)$this->nfce->infNFe->dest->xNome;
         $this->printer->text($xNome . "\n");
         $cnpj = (string)$this->nfce->infNFe->dest->CNPJ;
@@ -319,7 +323,7 @@ class DanfcePos
         $idEstrangeiro = (string)$this->nfce->infNFe->dest->idEstrangeiro;
         if (!empty($cnpj)) {
             $this->printer->text("CNPJ " . $cnpj . "\n");
-            $this->printer->lineFeed();
+            $this->printer->feed(1);
         }
         if (!empty($cpf)) {
             $this->printer->text("CPF " . $cpf . "\n");
