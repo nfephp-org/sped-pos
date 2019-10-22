@@ -215,12 +215,11 @@ class DanfcePos
         $this->printer->text($printTotItens . "\n");
         $this->printer->setJustification(Printer::JUSTIFY_CENTER);
         $this->separador();
-        $pag = $this->nfce->infNFe->pag->detPag;
-        $tot = $pag->count();
-        for ($x = 0; $x <= $tot - 1; $x++) {
-            $tPag = (string)$pag->tPag;
+         $pag = $this->nfce->infNFe->pag->detPag;
+        foreach ($pag as $pagI) {
+            $tPag = (string)$pagI->tPag;
             $tPag = (string)$this->tipoPag($tPag);
-            $vPag = (float)$pag->vPag;
+            $vPag = (float)$pagI->vPag;
             $printFormPag = $this->strPad(
                 $tPag . ":",
                 31,
