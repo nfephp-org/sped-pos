@@ -307,6 +307,12 @@ class DanfcePos
     protected function parteVIII()
     {
         $this->printer->setJustification(Printer::JUSTIFY_CENTER);
+		if (!empty($this->protNFe->infProt->xMsg)) {
+            $this->printer->text("INFORMAÇÕES ADICIONAIS");
+            $this->printer->feed(1);
+            $this->printer->text($this->protNFe->infProt->xMsg);
+            $this->printer->feed(1);
+        }
         $dest = $this->nfce->infNFe->dest;
         if (empty($dest)) {
             $this->printer->setEmphasis(true);
