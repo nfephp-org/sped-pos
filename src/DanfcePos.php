@@ -186,6 +186,9 @@ class DanfcePos
                 . $linha->unidade . $linha->valor_unit . $linha->valor_total . "\n"
             );
         }
+        $this->printer->setJustification(Printer::JUSTIFY_CENTER);
+        $this->separador();
+        $this->printer->setJustification(Printer::JUSTIFY_LEFT);
         $printTotItens = $this->strPad(
             'Qtd. Total:',
             31,
@@ -229,8 +232,6 @@ class DanfcePos
      */
     protected function parteIV()
     {
-        $this->printer->setJustification(Printer::JUSTIFY_CENTER);
-        $this->separador();
         $pag = $this->nfce->infNFe->pag->detPag;
         foreach ($pag as $pagI) {
             $tPag = (string) $pagI->tPag;
@@ -267,6 +268,7 @@ class DanfcePos
      */
     protected function parteV()
     {
+        $this->printer->setJustification(Printer::JUSTIFY_CENTER);
         $vTotTrib = (float) $this->nfce->infNFe->total->ICMSTot->vTotTrib;
         $printimp = $this->strPad("Informação dos Tributos Incidentes:", 35, " ")
         . str_pad("R$" . number_format($vTotTrib, 2, ',', '.'), 13, " ", STR_PAD_LEFT);
