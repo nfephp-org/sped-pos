@@ -122,7 +122,7 @@ class DanfcePos
         $this->uri = (string) $this->nfce->infNFeSupl->urlChave;
         $this->printer->setJustification(Printer::JUSTIFY_CENTER);
         if (!empty($this->logo)) {
-            $this->printer->graphics($this->logo);
+            $this->printer->bitImage($this->logo);
         }
         $this->printer->setEmphasis(true);
         $this->printer->text($razao . "\n");
