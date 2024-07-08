@@ -63,7 +63,7 @@ class DanfcePos
             $xml = @file_get_contents($nfcexml);
         }
         if (empty($xml)) {
-            throw new \InvalidArgumentException('Não foi possivel ler o documento.');
+            throw new \InvalidArgumentException('Não foi possível ler o documento.');
         }
         $nfe = simplexml_load_string($xml, null, LIBXML_NOCDATA);
         $this->protNFe = $nfe->protNFe;
@@ -413,12 +413,22 @@ class DanfcePos
             '02' => 'Cheque',
             '03' => 'Cartao de Credito',
             '04' => 'Cartao de Debito',
-            '05' => 'Credito Loja',
+            '05' => 'Cartao da Loja (Private Label)',
             '10' => 'Vale Alimentacao',
             '11' => 'Vale Refeicao',
             '12' => 'Vale Presente',
             '13' => 'Vale Combustivel',
+            '15' => 'Boleto Bancário',
+            '16' => 'Depósito Bancario',
+            '17' => 'PIX Dinâmico',
+            '18' => 'Transferencia Carteira Digital',
+            '19' => 'Prog.Fidel., CashBack, Créd.Virt.',
+            '20' => 'PIX Estático',
+            '21' => 'Credito em loja',
+            '22' => 'Pag.Eletr. Não Informado (Falha de hardware)',
+            '90' => 'Sem Pagamento',
             '99' => 'Outros',
+
         ];
         if (array_key_exists($tPag, $aPag)) {
             return $aPag[$tPag];
